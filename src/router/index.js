@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Homepage from '@/pages/homepage'
 import Post from '@/pages/post'
 import Myinfo from '@/pages/myinfo'
+import Search from '@/pages/search'
 import SendQuestion from '@/pages/sendQuestion'
 import SendShare from '@/pages/sendShare'
 import SendComment from '@/pages/sendComment'
@@ -27,6 +28,11 @@ export default new Router({
       path: '/myinfo',
       name: 'myinfo',
       component: Myinfo
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: Search
     },
     {
       path: '/sendQuestion',

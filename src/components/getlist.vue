@@ -22,8 +22,8 @@
                         <div class="content">{{ i.introduction }}</div>
                     </router-link>
                     <ul v-if="i.photonum!=0" class="photolist">
-                        <li v-for="p in i.photos" :class="i.photos.length>1 ? 'photos' : 'photo'">
-                            <img :src="p.photocut"  preview="index">
+                        <li v-for="(p) in i.photos" :class="i.photos.length>1 ? 'photos' : 'photo'">
+                            <img :src="p.photocut" :large='p.photo' :preview="index">
                         </li>
                     </ul>
                 </div>
@@ -35,7 +35,7 @@
                         <div class="comment"><img src="../assets/imgs/replay.png"></div>
                     </router-link>
                 </div>
-                <div v-if="i.answer!=null" class="commentpart">
+                <div  v-if="i.answernum!=0" class="commentpart">
                         <div class="avatar">
                             <img class="myhead" :src='i.answer.headimgurl'>
                         </div>
@@ -47,21 +47,28 @@
                     </div>
                     <router-link :to="'/thread/' + i.cid">
                     <div class="comcontent">
-                        <div class="contenttext">{{ i.answer.content }}</div>
+                        <div class="contenttext">
+                            <p>{{i.answer.content}}</p>
+                            <p class="imgword" v-if="i.answer.photos.length!=0">[图片]</p>
+                        </div>
                     </div>
                     </router-link>
                 </div>
                  </div>
                 </li>
             </ul>
+            <div class="loadmore" @click="loadmore"  v-show="tomore" >{{tips}}</div>
         </div>
-        <div class="loadmore" @click="loadmore">{{tips}}</div>
+        <div class="notfind" v-if="nofind">
+            <img src='../assets/imgs/nofind.png'>
+            <div class="nofindwords">还没有相关结果~</div>
+        </div>
     </div>
 </template>
 
 <script>
 export default {
-    props:['getUrl',"Type","College","Words"],
+    props:['getUrl',"searchlist"],
     data() {
         return {    
         list: [],
@@ -72,6 +79,9 @@ export default {
         REQUIRE: true,
         loading: false,
         tips:"加载更多",
+        result:"",
+        tomore:false,
+        nofind:false,
         notcollect:require('../assets/imgs/collect.png'),
         collected:require('../assets/imgs/collected.png'),
         nottake:require('../assets/imgs/takeit.png'),
@@ -81,49 +91,35 @@ export default {
   created() {
     this.getData()
   },
+  watch:{
+      searchlist:{
+        handler(newName, oldName) {
+      　　this.list = this.searchlist
+        if(list.length>=10){
+            this.tomore = true ;
+        }
+    　　},
+    　　immediate: true
+      }
+  },
   methods: {
     getData() {
       let page = this.page
-      if(this.getUrl=="http://wx.yyeke.com/xbbbm/search"){
-             if(this.Type == null){
-                alert("请选择内容分类")
-             }else{
-                this.axios.post(this.getUrl,"page="+page+"&words="+this.Words+"&sort="+this.Type+"&college="+this.College).then(res => {
-                this.list= res.data.data.list;
-                let imglist = res.data.data.list.photos
-                for (let i = 0; i < this.imglist.length; i++) {
-                let newImage = {};
-                let img = new Image();
-                img.src = this.imglist[i];
-                img.onload = function () {
-                    newImage.src = this.imglist[i];
-                    newImage.w = img.width;
-                    newImage.h = img.height;
-            };
-            this.previewlist.push(newImage);
-        }
-            }).catch(function (error) {
-            console.log(error)
-        })
-             }
-      }
+      if(this.getUrl!="http://wx.yyeke.com/xbbbm/search"){
       this.axios.post(this.getUrl,"page="+page).then(res => {
                 this.list= res.data.data.list;
-                let imglist = res.data.data.list.photos
-                for (let i = 0; i < this.imglist.length; i++) {
-                let newImage = {};
-                let img = new Image();
-                img.src = this.imglist[i];
-                img.onload = function () {
-                    newImage.src = this.imglist[i];
-                    newImage.w = img.width;
-                    newImage.h = img.height;
-            };
-            this.previewlist.push(newImage);
-        }
+                this.$previewRefresh()
+                if(list.length>=10){
+                    this.tomore = true ;
+                }
+                if(res.data.data.size=0){
+                    this.nofind = true ;
+                }
+                console.log(res.data.data.list);
             }).catch(function (error) {
             console.log(error)
         })
+      }
     },
     loadmore() {
         if (this.REQUIRE) {
@@ -133,8 +129,11 @@ export default {
             this.REQUIRE = false;
             this.loading = true;
             this.list=this.list.concat(res.data.data.list) 
-            console.log(res.data.data.list)
-            console.log(this.list);
+            this.$previewRefresh()
+            if(res.data.data.isLastPage==true)
+            {
+                this.tomore = false;
+            }
              this.$nextTick(() => {
             this.REQUIRE = true;
             this.loading = false;
@@ -170,23 +169,6 @@ export default {
             })
         }
     },
-    // show (index) {
-    //     for (let i = 0; i < this.imglist.length; i++) {
-    //         let newImage = {};
-    //         let img = new Image();
-    //         img.src = this.imglist[i];
-    //         img.onload = function () {
-    //             newImage.src = this.imglist[i];
-    //             newImage.w = img.width;
-    //             newImage.h = img.height;
-    //         };
-    //         this.previewlist.push(newImage);
-    //     }
-    //     // 正常情况下javascript都是按照顺序执行的。但是我们可能让该语句后面的语句执行完再执行本身，用setTimeout延时0ms来实现。
-    //     setTimeout(() => {
-    //         this.$preview.open(index, this.previewlist);
-    //     }, 0);
-    // }
   }
 }
 </script>
@@ -195,10 +177,12 @@ export default {
   margin: 0 auto;
   width: 100vw;
   background-color: #f2f2f2;
+  margin-bottom: 17vw;
 }
 
 .article_list ul {
   padding: 0;
+  margin: 0;
 }
 
 /* .datalists{
@@ -217,9 +201,10 @@ list-style-type: none;
 }
 
 .loadmore{
-    margin-bottom: 17vw;
     text-align: center;
-    color: #5a5858;
+    color: #a3a3a3;
+    margin-bottom: 0.5vh;
+    font-size: 3.2vw;
 }
 
 .listcontent {
@@ -387,6 +372,7 @@ a {
     margin-right: 1.6vw;
     position: relative;
     margin-top: 1vh;
+    margin-bottom: 1vh;
 }
 
 .photos img {
@@ -403,5 +389,14 @@ a {
 .xbname{
     color: #49adfe;
     font-size: 3.5vw;
+}
+
+.contenttext p{
+    margin: 0;
+    display: inline-block;
+}
+
+.imgword{
+    color: #a3a3a3;
 }
 </style>

@@ -19,7 +19,7 @@
                             <div class="content">{{ data.introduction }}</div>
                             <ul v-if="data.photonum!=0" class="photolist">
                                 <li v-for="p in data.photos" :class="data.photos.length>1 ? 'qphotos' : 'photo'">
-                                    <img :src="p.photocut">
+                                    <img :src="p.photocut" :large='p.photo' preview="100">
                                 </li>
                             </ul>
                         </div>
@@ -49,8 +49,8 @@
                         <div >
                             <div class="contenttext">{{ i.content }}</div>
                             <ul v-if="i.photonum!=0" class="photolist">
-                                <li v-for="p in i.photos" :class="i.photos.length>1 ? 'aphotos' : 'photo'">
-                                    <img :src="p.photocut">
+                                <li v-for="(p) in i.photos" :class="i.photos.length>1 ? 'aphotos' : 'photo'">
+                                    <img :src="p.photocut" :large='p.photo' :preview="index">
                                 </li>
                             </ul>
                         </div>
@@ -100,6 +100,7 @@ export default {
           
                 this.data = res.data.data;
                 this.list= res.data.data.answer;
+                this.$previewRefresh()
             }).catch(function (error) {
             console.log(error)
         })

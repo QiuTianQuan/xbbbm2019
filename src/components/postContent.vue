@@ -1,7 +1,7 @@
 <template>
     <div class="sendpage">
-        <input v-if="istitle" type="text" id="title" name="title" placeholder="请输入18字以内标题"  v-model="title">
-        <textarea type="text" id="content" name="content" :placeholder="'请输入发表内容（少于'+contentL+'字）'" v-model="content"></textarea>
+        <input v-if="istitle" type="text" id="title" name="title" placeholder="请输入18字以内标题"  v-model="title" @focus="bottomshow=false" @blur="bottomshow=true">
+        <textarea type="text" id="content" name="content" :placeholder="'请输入发表内容（少于'+contentL+'字）'" v-model="content"  @focus="bottomshow=false" @blur="bottomshow=true"></textarea>
         <input @change="fileChange($event)" type="file" id="upload_file" multiple style="display: none"/>
         <div class="middle">
                 <ul class="img-list">
@@ -19,7 +19,7 @@
             
             <college v-on:getcollege="whichcollege"/>
         </div>
-        <div class="bottom">
+        <div class="bottom" v-show="bottomshow">
             <div>
             <button class="sendPost" @click="sendPost">发布{{type}}</button>
             </div>
@@ -41,6 +41,7 @@ export default {
             content:"",
             title:"",
             showFace: false,
+            bottomshow:true,
             imgList: [],
             size: 0,
             college:"",
@@ -62,7 +63,6 @@ export default {
                     formData.append('file',item);
                 });
             formData.append("college",college)
-            formData.append("introduction",content)
             let config = {
               headers: {
                 'Content-Type': 'multipart/form-data'
@@ -77,6 +77,7 @@ export default {
                     alert("标题字数不正确")
                     }else{
                         //学霸笔记
+                        formData.append("introduction",content)
                         formData.append('title', title);     
                         this.axios.post(this.ownurl,formData).then(res =>{
                             if(res.data.status==200)
@@ -90,8 +91,10 @@ export default {
                         })                    
                     }
                 }else{
+                    console.log(this.id)
                     if(this.id != undefined){
                         //回复
+                        formData.append("content",content)
                         console.log(this.id)
                         formData.append('cid',this.id);
                         this.axios.post(this.ownurl,formData).then(res =>{
@@ -106,6 +109,7 @@ export default {
                         })     
                     }else{
                         //提问
+                        formData.append("introduction",content)
                         this.axios.post(this.ownurl,formData,config).then(res =>{
                             if(res.data.status==200)
                             {
@@ -297,7 +301,35 @@ export default {
         width: 100%;
     }
 
+    .tosendQ{
+    width: 92vw;
+    margin: 0 auto;
+    display: block;
+    height: 12vw;
+    border-radius: 3px;
+    text-align: center;
+    line-height: 11vw;
+    background-color: #49adfe;
+    color: white;
+    -webkit-tap-highlight-color: rgba(255,0,0,0);
+    font-size: 4vw;
+    border: none;
+    margin-top: 20vh;
+    }
 
+    .notfind{
+        margin-top: 20vh;
+        text-align: center;
+    }
+
+    .notfind img{
+        width: 40vw;
+    }
+
+    .nofindwords {
+        margin-top: 1.5vh;
+        color: #b6b6b6;
+    }
 
     .add {
         display: inline-block;

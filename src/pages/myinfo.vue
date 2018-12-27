@@ -9,7 +9,7 @@
                         </div>
                         <div class="myId">
                             <div class="username">{{info.nickname}}</div>
-                            <div class="userflag">学霸</div>
+                            <div :class="info.scholar==1 ? 'xbname' : 'xzname'">学霸</div>
                         </div>
                     </div>
                 </div>
@@ -69,9 +69,7 @@ export default {
   }).then(res => {
         if(res.status=200)
         {
-            this.info = res.data;
-           
-           
+            this.info = res.data.data;
          }   
         }).catch(function (error) {
         console.log(error)
@@ -154,7 +152,7 @@ export default {
 }
 
 .tab{
-    margin-top: 17vh;
+    margin-top: 19.5vh;
 }
 .top{
   position: fixed;
@@ -170,9 +168,15 @@ export default {
     color: #333333;
 }
 
-.userflag {
+
+.xzname{
+    color: #444444;
     font-size: 3.2vw;
+}
+
+.xbname{
     color: #49adfe;
+    font-size: 3.2vw;
 }
 
 </style>
