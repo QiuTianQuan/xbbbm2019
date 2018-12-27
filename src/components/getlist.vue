@@ -109,7 +109,7 @@ export default {
       this.axios.post(this.getUrl,"page="+page).then(res => {
                 this.list= res.data.data.list;
                 this.$previewRefresh()
-                if(list.length>=10){
+                if(this.list.length>=10){
                     this.tomore = true ;
                 }
                 if(res.data.data.size=0){
