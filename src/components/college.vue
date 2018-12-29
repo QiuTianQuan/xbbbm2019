@@ -46,7 +46,7 @@ export default {
 
 <style>
 #colleges{
-     width: 94vw;
+     width: 92vw;
      margin: 0 auto;
 }
 
@@ -74,7 +74,7 @@ export default {
     margin-top: 2vh;
     outline: none;
     font-size: 4vw;
-    
+    padding: 0;
 }
 </style>
 

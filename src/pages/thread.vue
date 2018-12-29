@@ -96,7 +96,7 @@ export default {
   methods: {
     getData() {
         let id = this.id
-      this.axios.post("http://wx.yyeke.com/xbbbm/get","cid="+id).then(res => {
+      this.axios.post("http://wx.yyeke.com/2720/xbbbm/get","cid="+id).then(res => {
           
                 this.data = res.data.data;
                 this.list= res.data.data.answer;
@@ -111,7 +111,7 @@ export default {
         tocollect(event,cid){
         if(event.target.src == this.collect){
             event.target.src = this.collected ;
-            this.axios.post("http://wx.yyeke.com/xbbbm/collection","cid="+cid).then(res => {
+            this.axios.post("http://wx.yyeke.com/2720/xbbbm/collection","cid="+cid).then(res => {
             }).catch(function (error) {
             console.log(error)
             })
@@ -120,13 +120,13 @@ export default {
     totakeit(event,aid){
         if(event.target.src == this.nottake){
             event.target.src = this.taked ;
-            this.axios.post("http://wx.yyeke.com/xbbbm/adopt","answerid="+aid).then(res => {
+            this.axios.post("http://wx.yyeke.com/2720/xbbbm/adopt","answerid="+aid).then(res => {
             }).catch(function (error) {
             console.log(error)
             })
         }else{
            event.target.src = this.nottake ;
-            this.axios.post("http://wx.yyeke.com/xbbbm/adoptout","answerid="+aid).then(res => {
+            this.axios.post("http://wx.yyeke.com/2720/xbbbm/adoptout","answerid="+aid).then(res => {
             }).catch(function (error) {
             console.log(error)
             })
@@ -138,7 +138,7 @@ export default {
             event.target.src = this.liked ;
             event.target.parentNode.nextElementSibling.style.color =  "#49adfe"
             this.list[index].likenum += 1;
-            this.axios.post("http://wx.yyeke.com/xbbbm/praise","answerid="+aid).then(res => {
+            this.axios.post("http://wx.yyeke.com/2720/xbbbm/praise","answerid="+aid).then(res => {
             }).catch(function (error) {
             console.log(error)
             })
@@ -146,7 +146,7 @@ export default {
            event.target.src = this.like ;
             this.list[index].likenum -= 1;
             event.target.parentNode.nextElementSibling.style.color =  "#9d9d9d"
-            this.axios.post("http://wx.yyeke.com/xbbbm/praiseout","answerid="+aid).then(res => {
+            this.axios.post("http://wx.yyeke.com/2720/xbbbm/praiseout","answerid="+aid).then(res => {
             }).catch(function (error) {
             console.log(error)
             })

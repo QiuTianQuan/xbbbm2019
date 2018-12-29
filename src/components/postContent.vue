@@ -17,7 +17,7 @@
                     </div>
                 </ul>
             
-            <college v-on:getcollege="whichcollege"/>
+            <college v-on:getcollege="whichcollege" v-if="iscollege"/>
         </div>
         <div class="bottom" v-show="bottomshow">
             <div>
@@ -27,6 +27,9 @@
                 <img src='../assets/imgs/close.png'>
             </div>
         </div>
+        <div class="posting" v-if="posting">
+            正在上传...
+        </div>
     </div>
 </template>
 
@@ -35,13 +38,14 @@ import college from '@/components/college'
 export default {
     components: {college},
     inject:['reload'],
-    props : ["ownurl","contentL","pathto","istitle","type","id"],
+    props : ["ownurl","contentL","pathto","istitle","type","id","iscollege"],
     data() {
         return {
             content:"",
             title:"",
             showFace: false,
             bottomshow:true,
+            posting:false,
             imgList: [],
             size: 0,
             college:"",
@@ -55,6 +59,7 @@ export default {
     methods: {
         sendPost:function() {
             event.preventDefault();
+            this.posting= true;
             let formData = new FormData();
             let content = this.content;
             let title = this.title;
@@ -62,7 +67,6 @@ export default {
             this.filelists.forEach((item) =>{
                     formData.append('file',item);
                 });
-            formData.append("college",college)
             let config = {
               headers: {
                 'Content-Type': 'multipart/form-data'
@@ -78,8 +82,9 @@ export default {
                     }else{
                         //学霸笔记
                         formData.append("introduction",content)
-                        formData.append('title', title);     
-                        this.axios.post(this.ownurl,formData).then(res =>{
+                        formData.append('title', title);    
+                        formData.append("college",college) 
+                        this.axios.put(this.ownurl,formData,config).then(res =>{
                             if(res.data.status==200)
                             {
                                 this.$router.go(this.pathto)
@@ -97,7 +102,7 @@ export default {
                         formData.append("content",content)
                         console.log(this.id)
                         formData.append('cid',this.id);
-                        this.axios.post(this.ownurl,formData).then(res =>{
+                        this.axios.post(this.ownurl,formData,config).then(res =>{
                             if(res.data.status==200)
                             {
                                 this.$router.go(this.pathto)
@@ -110,6 +115,7 @@ export default {
                     }else{
                         //提问
                         formData.append("introduction",content)
+                        formData.append("college",college)
                         this.axios.post(this.ownurl,formData,config).then(res =>{
                             if(res.data.status==200)
                             {
@@ -223,7 +229,6 @@ export default {
 
 .sendpage{
     width: 100vw;
-    height: 100vh;
 }
 #title,#content{
     border: none;
@@ -438,5 +443,26 @@ export default {
         width: 92vw;
         bottom: 6vw;
         margin-left: 4vw;
+    }
+
+    .posting{
+        width: 30vw;
+        height: 30vw;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -15vw;
+        margin-left: -15vw;
+        opacity: 0.9;
+        line-height: 30vw;
+        text-align: center;
+        background-color: #f2f2f2;
+        font-size: 5vw;
+        color: #222020;
+    }
+
+    .posting p{
+        font-size: 5vw;
+        color: #a3a3a3;
     }
 </style>

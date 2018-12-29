@@ -46,6 +46,13 @@ export default {
                 {value:'xbShare',text:"学霸笔记"}]
     }
   },
+  created(){
+    //   this.axios.get("http://wx.yyeke.com/xbbbm/user", {
+    // }).then(res => {  
+    //     }).catch(function (error) {
+    //     console.log(error)
+    //     })
+  },
   computed: {
     currentTabComponent: function () {
       return  this.currentTab
@@ -65,7 +72,7 @@ export default {
     margin: 0 auto;
     margin-top: 2.5vh;
     display: block;
-    height: 4.5vh;
+    height: 4.9vh;
     border-radius: 5px;
     background-color: #f2f2f2;
     
@@ -73,7 +80,7 @@ export default {
 .searchp{
   position: absolute;
   width: 100%;
-  top: 3.2vh;
+  top: 3.5vh;
   display: flex;
   align-items: end;
   width: 100%;

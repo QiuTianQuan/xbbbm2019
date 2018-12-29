@@ -1,5 +1,5 @@
 <template>
     <div>
-        <getlist getUrl = "http://wx.yyeke.com/xbbbm/myNotes" />
+        <getlist getUrl = "hthttp://wx.yyeke.com/2720/xbbbm/myNotes" />
     </div>
 </template>

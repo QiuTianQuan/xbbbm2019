@@ -94,10 +94,12 @@ export default {
   watch:{
       searchlist:{
         handler(newName, oldName) {
-      　　this.list = this.searchlist
-        if(list.length>=10){
-            this.tomore = true ;
-        }
+            if(this.searchlist!= undefined){
+            　　this.list = this.searchlist
+                if(this.list.length>=10){
+                    this.tomore = true ;
+                }
+            }
     　　},
     　　immediate: true
       }
@@ -105,7 +107,7 @@ export default {
   methods: {
     getData() {
       let page = this.page
-      if(this.getUrl!="http://wx.yyeke.com/xbbbm/search"){
+      if(this.getUrl!="http://wx.yyeke.com/2720/xbbbm/search"){
       this.axios.post(this.getUrl,"page="+page).then(res => {
                 this.list= res.data.data.list;
                 this.$previewRefresh()
@@ -148,7 +150,7 @@ export default {
     tocollect(event,cid){
         if(event.target.src == this.notcollect){
             event.target.src = this.collected ;
-            this.axios.post("http://wx.yyeke.com/xbbbm/collection","cid="+cid).then(res => {
+            this.axios.post("http://wx.yyeke.com/2720/xbbbm/collection","cid="+cid).then(res => {
             }).catch(function (error) {
             console.log(error)
             })
@@ -157,13 +159,13 @@ export default {
     totakeit(event,aid){
         if(event.target.src == this.nottake){
             event.target.src = this.taked ;
-            this.axios.post("http://wx.yyeke.com/xbbbm/adopt","answerid="+aid).then(res => {
+            this.axios.post("http://wx.yyeke.com/2720/xbbbm/adopt","answerid="+aid).then(res => {
             }).catch(function (error) {
             console.log(error)
             })
         }else{
            event.target.src = this.nottake ;
-            this.axios.post("http://wx.yyeke.com/xbbbm/adoptout","answerid="+aid).then(res => {
+            this.axios.post("http://wx.yyeke.com/2720/xbbbm/adoptout","answerid="+aid).then(res => {
             }).catch(function (error) {
             console.log(error)
             })
@@ -233,6 +235,7 @@ a {
     font-size: 3.5vw;
     color: #ada8a8;
     margin-top: 2vw;
+    font-family: sans-serif;
 }
 
 .avatar {
@@ -297,6 +300,7 @@ a {
     color: #9d9d9d;
     font-size: 3vw;
     margin-top: 1vw;
+    font-family: sans-serif;
 }
 
 .info_college {

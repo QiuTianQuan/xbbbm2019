@@ -2,7 +2,7 @@
     <div class="searchpage">
             <div class="searchpart" v-show="notresult">
               <form action="" @submit="search">
-                <input ref="searchbox" type="search"  id="searchit"  @blur="tosearch = true,closeshow=true" >
+                <input ref="searchbox" type="text"  id="searchit"  @blur="tosearch = true,closeshow=true" >
               </form>
               <div class="searchp" v-if="tosearch" @click="onfocus">
                 <img src='../assets/imgs/search.png'>
@@ -25,7 +25,7 @@
                 <div class="kind">{{type}} </div>
                 <div class="whichcollege">{{college}} </div>
               </div>
-                <getlist :searchlist="searchlist" getUrl="http://wx.yyeke.com/xbbbm/search"  />
+                <getlist :searchlist="searchlist" getUrl="http://wx.yyeke.com/2720/xbbbm/search"  />
                 <div  class="bottomback">
                   <img @click="backto" src='../assets/imgs/closeit.png' >
                 </div>
@@ -95,7 +95,7 @@ export default {
       if(this.type==""){
            alert("至少要选择内容哦~")
       }else{
-      this.axios.post("http://wx.yyeke.com/xbbbm/search","page=1&words="+this.words+"&sort="+this.type+"&college="+this.college).then(res => {
+      this.axios.post("http://wx.yyeke.com/2720/xbbbm/search","page=1&words="+this.words+"&sort="+this.type+"&college="+this.college).then(res => {
         if(res.data.data.size==0){
             this.noresult=true;
             this.notresult = false;
@@ -136,7 +136,7 @@ a {
 .searchp{
   position: absolute;
   width: 100%;
-  top: 3.2vh;
+  top: 3.4vh;
   display: flex;
   align-items: end;
   width: 100%;
@@ -156,7 +156,7 @@ a {
 }
 
 .type{
-  width: 94vw;
+  width: 92vw;
   margin: 0 auto;
   padding: 5vw 0;
 }
@@ -244,7 +244,7 @@ a {
     height: 12vw;
     border-radius: 3px;
     text-align: center;
-    line-height: 11vw;
+    line-height: 12vw;
     background-color: #49adfe;
     color: white;
     -webkit-tap-highlight-color: rgba(255,0,0,0);
