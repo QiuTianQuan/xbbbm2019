@@ -46,13 +46,6 @@ export default {
                 {value:'xbShare',text:"学霸笔记"}]
     }
   },
-  created(){
-    //   this.axios.get("http://wx.yyeke.com/xbbbm/user", {
-    // }).then(res => {  
-    //     }).catch(function (error) {
-    //     console.log(error)
-    //     })
-  },
   computed: {
     currentTabComponent: function () {
       return  this.currentTab

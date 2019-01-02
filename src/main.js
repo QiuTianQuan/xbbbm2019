@@ -14,25 +14,20 @@ import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 Vue.use(preview)
 
-// import VuePreview from 'vue2-preview'
-// Vue.use(VuePreview)
-// Vue.use(preview,{
-//   mainClass: 'pswp--minimal--dark',
-//   barsSize: {top: 0, bottom: 0},
-//   captionEl: false,
-//   fullscreenEl: false,
-//   shareEl: false,
-//   bgOpacity: 0.85,
-//   tapToClose: true,
-//   tapToToggleControls: false
-// })
-
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 axios.defaults.withCredentials = true 
 Vue.use(VueAxios,axios);
 Vue.config.productionTip = false
+axios.defaults.withCredentials=true;
+
+Vue.http.interceptors.push((request, next) => {
+
+  request.credentials = true;
+
+     next();
+});
 
 Vue.filter('getTime', function (value) {
   if (!value) return ''

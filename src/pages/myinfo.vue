@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     getData() {
-      this.axios.get("http://wx.yyeke.com/2720/xbbbm/user", {
+      this.axios.get("http://wx.yyeke.com/2720/xbbbm/userInfo", {
   }).then(res => {
         if(res.status=200)
         {

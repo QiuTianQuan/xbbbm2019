@@ -115,6 +115,12 @@ export default {
             }).catch(function (error) {
             console.log(error)
             })
+        }else{
+           event.target.src = this.collect ;
+            this.axios.post("http://wx.yyeke.com/2720/xbbbm/collectionout","cid="+cid).then(res => {
+            }).catch(function (error) {
+            console.log(error)
+            })
         }
     },
     totakeit(event,aid){
